@@ -24,9 +24,12 @@ if __name__ == '__main__':
 	firstLX = 100
 
 	#Constants range
-	depth_range = 0.2
+	depth_range_follow = 0.1
+	#Clear should be less sentitive
+	depth_range_clear = 0.2
 	move_range = 0.1
 	rotation_range = 0.1
+
 
 	rospy.init_node('turtle_controller')
 
@@ -55,7 +58,7 @@ if __name__ == '__main__':
 				firstRZ = right_hand_trans[2]
 				firstLX = left_hand_trans[0]
 
-			if right_hand_trans[0] < firstRX - depth_range:
+			if right_hand_trans[0] < firstRX - depth_range_clear:
 				#Clean
 				clear_screen()
 			elif right_hand_trans[2] > firstRZ + move_range:
@@ -78,7 +81,7 @@ if __name__ == '__main__':
 			(trans,rot) = listener.lookupTransform('/turtle2', '/turtle1', rospy.Time(0))
 
 			#Determine whether turtle2 follows turtle1
-			if left_hand_trans[0] > firstLX - depth_range:
+			if left_hand_trans[0] > firstLX - depth_range_follow:
 				angular = 4 * math.atan2(trans[1], trans[0])
 				linear = 0.5 * math.sqrt(trans[0] ** 2 + trans[1] ** 2)
 				#Make turtle2 follow turtle1
